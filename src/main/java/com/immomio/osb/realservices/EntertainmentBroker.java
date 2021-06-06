@@ -29,7 +29,7 @@ public class EntertainmentBroker implements Broker {
         provisionedServices = new HashMap<>();
         serviceBindings = new HashMap<>();
 
-        var services = initServices();
+        List<ServiceSpec> services = initServices();
         servicesContainer = new ServiceSpecsContainer(services);
     }
 
