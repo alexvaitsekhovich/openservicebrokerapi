@@ -9,6 +9,6 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 public class ServiceBinding {
-    private String instanceId;
-    private String bindingId;
+    private final String instanceId;
+    private final String bindingId;
 }

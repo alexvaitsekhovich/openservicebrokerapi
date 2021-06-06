@@ -21,7 +21,7 @@ public class BindingResponse {
 
     public BindingResponse(String instanceId, String username, HttpStatus httpStatus) {
         this.password = UUID.randomUUID().toString().replace("-", "");
-        this.uri = String.format("https://some-service/%s", instanceId);;
+        this.uri = String.format("https://some-service/%s", instanceId);
         this.username = username;
         this.httpStatus = httpStatus;
     }

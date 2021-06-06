@@ -25,7 +25,7 @@ public class HeaderFilter extends OncePerRequestFilter {
             return;
         }
 
-        ApiVersion providedApiVersion = null;
+        ApiVersion providedApiVersion;
 
         try {
             providedApiVersion = new ApiVersion(apiVersionHeader);

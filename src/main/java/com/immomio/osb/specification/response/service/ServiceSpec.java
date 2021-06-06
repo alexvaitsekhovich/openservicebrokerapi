@@ -4,15 +4,14 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 public class ServiceSpec {
-    protected String id;
-    protected String name;
-    protected String description;
-    protected boolean bindable;
-    protected List<ServicePlanSpec> plans;
+    protected final String id;
+    protected final String name;
+    protected final String description;
+    protected final boolean bindable;
+    protected final List<ServicePlanSpec> plans;
 
     public ServiceSpec(String id, String name, String description, boolean bindable) {
         this.id = id;

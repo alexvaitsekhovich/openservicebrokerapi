@@ -6,7 +6,7 @@ import java.util.List;
 
 @Getter
 public class ServiceSpecsContainer {
-    private List<ServiceSpec> services;
+    private final List<ServiceSpec> services;
 
     public ServiceSpecsContainer(List<ServiceSpec> services) {
         this.services = services;
