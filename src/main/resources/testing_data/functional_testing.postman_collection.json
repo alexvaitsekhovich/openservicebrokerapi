@@ -1,0 +1,976 @@
+{
+	"info": {
+		"_postman_id": "504cf67d-ce91-46c0-96ef-1ee0b865b4ce",
+		"name": "Open Service Broker testing collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get catalog - ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let services = pm.response.json().services;",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(services).length).to.eql(2);",
+							"});",
+							"",
+							"let service1 = services[0]",
+							"let service2 = services[1]",
+							"",
+							"pm.test(\"Test service 1\", function () {",
+							"    pm.expect(service1.id).to.eql(\"11\");",
+							"    pm.expect(service1.name).to.eql(\"Streaming\");",
+							"    pm.expect(service1.bindable).to.eql(true);",
+							"    pm.expect(service1.plans.length).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Test service 2\", function () {",
+							"    pm.expect(service2.id).to.eql(\"22\");",
+							"    pm.expect(service2.name).to.eql(\"Mailing\");",
+							"    pm.expect(service2.bindable).to.eql(true);",
+							"    pm.expect(service2.plans.length).to.eql(3);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v2/catalog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get catalog without auth - unauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v2/catalog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get catalog no header - bad request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v2/catalog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get catalog bad api version - bad request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "aaa",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v2/catalog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get catalog small api version - precondition failed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 412\", function () {",
+							"    pm.response.to.have.status(412);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.11",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v2/catalog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"catalog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create service - created",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in object\", function () {",
+							"    pm.expect(Object.keys(response).length).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Test fields\", function () {",
+							"    pm.expect(response.dashboard_url.length).to.gt(0);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create service duplicate - ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in object\", function () {",
+							"    pm.expect(Object.keys(response).length).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Test dashboard provided\", function () {",
+							"    pm.expect(response.dashboard_url.length).to.gt(0);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create service duplicate different params - conflict",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {",
+							"    pm.response.to.have.status(409);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22B\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete service - ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance?service_id=22&plan_id=22A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance"
+					],
+					"query": [
+						{
+							"key": "service_id",
+							"value": "22"
+						},
+						{
+							"key": "plan_id",
+							"value": "22A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete service not existing - gone",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 410\", function () {",
+							"    pm.response.to.have.status(410);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance?service_id=22&plan_id=22A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance"
+					],
+					"query": [
+						{
+							"key": "service_id",
+							"value": "22"
+						},
+						{
+							"key": "plan_id",
+							"value": "22A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create binding - created",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in object\", function () {",
+							"    pm.expect(Object.keys(response).length).to.eql(3);",
+							"});",
+							"",
+							"pm.test(\"Test fields\", function () {",
+							"    pm.expect(response.password.length).to.gt(0);",
+							"    pm.expect(response.uri.length).to.gt(0);",
+							"    pm.expect(response.username).to.eql(\"admin\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance/service_bindings/admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance",
+						"service_bindings",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create binding duplicate - ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let response = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in object\", function () {",
+							"    pm.expect(Object.keys(response).length).to.eql(3);",
+							"});",
+							"",
+							"pm.test(\"Test fields\", function () {",
+							"    pm.expect(response.password.length).to.gt(0);",
+							"    pm.expect(response.uri.length).to.gt(0);",
+							"    pm.expect(response.username).to.eql(\"admin\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"service_id\": \"22\",\n    \"plan_id\": \"22A\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance/service_bindings/admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance",
+						"service_bindings",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete binding - ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance/service_bindings/admin?service_id=22&plan_id=22A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance",
+						"service_bindings",
+						"admin"
+					],
+					"query": [
+						{
+							"key": "service_id",
+							"value": "22"
+						},
+						{
+							"key": "plan_id",
+							"value": "22A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete binding not existing - gone",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 410\", function () {",
+							"    pm.response.to.have.status(410);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "immomio",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "immomio",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Broker-API-Version",
+						"value": "2.16",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v2/service_instances/TestInstance/service_bindings/admin?service_id=22&plan_id=22A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v2",
+						"service_instances",
+						"TestInstance",
+						"service_bindings",
+						"admin"
+					],
+					"query": [
+						{
+							"key": "service_id",
+							"value": "22"
+						},
+						{
+							"key": "plan_id",
+							"value": "22A"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
