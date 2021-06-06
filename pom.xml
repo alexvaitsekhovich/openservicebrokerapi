@@ -11,10 +11,21 @@
     <groupId>com.immomio</groupId>
     <artifactId>osb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>osb</name>
     <description>Simple open service broker with mocks</description>
+    <developers>
+        <developer>
+            <name>Alex Vaitsekhovich</name>
+            <email>alex.vaitsekhovich@gmail.com</email>
+            <organization>private</organization>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>16</java.version>
+        <docker.image.prefix>alexvaitsekhovich</docker.image.prefix>
+        <docker.image.name>${project.artifactId}</docker.image.name>
     </properties>
     <dependencies>
         <dependency>
@@ -59,6 +70,16 @@
                 <configuration>
                     <source>14</source>
                     <target>14</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <to>
+                        <image>${docker.image.prefix}/${docker.image.name}</image>
+                    </to>
                 </configuration>
             </plugin>
         </plugins>

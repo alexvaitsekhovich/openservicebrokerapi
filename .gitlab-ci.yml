@@ -1,0 +1,39 @@
+variables:
+  ARTIFACT_NAME: osb-1.0.$CI_PIPELINE_IID.jar
+
+default:
+  image: openjdk:16-alpine3.13
+
+stages:
+  - build
+  - functional tests
+  - deploy
+
+build a jar:
+  stage: build
+  script:
+    - ./mvnw package -Dmaven.test.skip=true
+    - mkdir ./build
+    - mv target/osb-0.0.1-SNAPSHOT.jar ./build/$ARTIFACT_NAME
+  artifacts:
+    paths:
+      - ./build
+
+postman tests:
+  stage: functional tests
+  image: alexvaitsekhovich/alpine-jre-newman
+  script:
+    - java -jar ./build/$ARTIFACT_NAME &
+    - sleep 40s
+    - newman run src/main/resources/testing_data/functional_testing.postman_collection.json
+  dependencies:
+    - build a jar
+
+push to docker:
+  stage: deploy
+  script:
+    - ./mvnw clean compile jib:build -Djib.to.auth.username=alexvaitsekhovich -Djib.to.auth.password="${DOCKERHUB_PASSWORD}"
+  dependencies:
+    - build a jar
+  only:
+    - main
