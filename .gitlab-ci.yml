@@ -2,7 +2,7 @@ variables:
   ARTIFACT_NAME: osb-1.0.$CI_PIPELINE_IID.jar
 
 default:
-  image: openjdk:16-alpine3.13
+  image: openjdk:12-alpine
 
 stages:
   - build

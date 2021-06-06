@@ -23,7 +23,7 @@
     </developers>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>11</java.version>
         <docker.image.prefix>alexvaitsekhovich</docker.image.prefix>
         <docker.image.name>${project.artifactId}</docker.image.name>
     </properties>
