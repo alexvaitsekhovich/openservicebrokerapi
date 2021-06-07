@@ -24,8 +24,6 @@
 
     <properties>
         <java.version>11</java.version>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
         <docker.image.prefix>alexvaitsekhovich</docker.image.prefix>
         <docker.image.name>${project.artifactId}</docker.image.name>
     </properties>
@@ -69,6 +67,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>

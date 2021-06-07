@@ -18,8 +18,8 @@ public class OsbExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(ServicePlanException ex) {
-        log.error(ex.getMessage(), ex);
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+        log.error(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
