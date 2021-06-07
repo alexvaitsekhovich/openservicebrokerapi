@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiVersionConfig {
 
-    @Value("${immomio.osb.broker-api-version-min}")
-    private String apiMinimalVersion;
-
     public static ApiVersion MIN_API_VERSION;
 
     @Value("${immomio.osb.broker-api-version-min}")
