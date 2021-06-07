@@ -38,7 +38,7 @@ public class BrokerController {
     /*
         curl 'http://immomio:immomio@localhost:8080/v2/service_instances/TestInstance' -d '{"service_id": "22","plan_id": "22A"}' -X PUT -H "X-Broker-API-Version: 2.16" -H "Content-Type: application/json"  | json_pp
      */
-    @PutMapping(value = SERVICE_URL)
+    @PutMapping(SERVICE_URL)
     public ResponseEntity<ProvisioningResponse> createServiceInstance(
             @Valid @RequestBody ServiceProvisioningDto servicePlan,
             @PathVariable String instanceId
